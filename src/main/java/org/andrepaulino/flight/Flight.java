@@ -1,5 +1,7 @@
 package org.andrepaulino.flight;
 
+import java.util.List;
+
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import lombok.Data;
@@ -15,5 +17,9 @@ public class Flight extends PanacheEntity {
 
     public void setIdToNull() {
         super.id = null;
+    }
+
+    public static List<Flight> findByTravelOrderId(Long travelOrderId) {
+        return find("travelOrderId", travelOrderId).list();
     }
 }
