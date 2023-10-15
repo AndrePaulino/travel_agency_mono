@@ -1,6 +1,7 @@
 package org.andrepaulino.travelorder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.andrepaulino.flight.Flight;
 import org.andrepaulino.flight.FlightResource;
@@ -27,8 +28,14 @@ public class TravelOrderResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<TravelOrder> orders() {
-        return TravelOrder.listAll();
+    public List<TravelOrderDTO> orders() {
+        return TravelOrder.<TravelOrder>listAll().stream()
+                .map(
+                        order -> TravelOrderDTO.of(
+                                order,
+                                flightResource.findByTravelOrderId(order.getId()),
+                                hotelResource.findByTravelOrderId(order.getId())))
+                .collect(Collectors.toList());
     }
 
     @GET
