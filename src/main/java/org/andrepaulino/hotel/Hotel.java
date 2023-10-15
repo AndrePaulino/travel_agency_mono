@@ -1,7 +1,5 @@
 package org.andrepaulino.hotel;
 
-import java.util.List;
-
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import lombok.Data;
@@ -18,7 +16,7 @@ public class Hotel extends PanacheEntity {
         this.id = null;
     }
 
-    public static List<Hotel> findByTravelOrderId(Long travelOrderId) {
-        return find("travelOrderId", travelOrderId).list();
+    public static Hotel findByTravelOrderId(Long travelOrderId) {
+        return find("travelOrderId", travelOrderId).firstResult();
     }
 }
