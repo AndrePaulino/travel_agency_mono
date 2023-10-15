@@ -6,4 +6,11 @@ import jakarta.persistence.Entity;
 @Entity
 public class TravelOrder extends PanacheEntity {
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setIdToNull() {
+        this.id = null;
+    }
 }

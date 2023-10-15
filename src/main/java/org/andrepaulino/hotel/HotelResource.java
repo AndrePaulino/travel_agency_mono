@@ -33,7 +33,7 @@ public class HotelResource {
     @Consumes(MediaType.APPLICATION_JSON)
 
     public Hotel newHotel(Hotel hotel) {
-        hotel.id = null;
+        hotel.setIdToNull();
         hotel.persist();
 
         return hotel;

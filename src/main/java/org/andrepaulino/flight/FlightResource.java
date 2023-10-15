@@ -32,7 +32,7 @@ public class FlightResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Flight newFlight(Flight flight) {
-        flight.id = null;
+        flight.setIdToNull();
         flight.persist();
 
         return flight;
