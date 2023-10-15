@@ -2,6 +2,12 @@ package org.andrepaulino.travelorder;
 
 import java.util.List;
 
+import org.andrepaulino.flight.Flight;
+import org.andrepaulino.flight.FlightResource;
+import org.andrepaulino.hotel.Hotel;
+import org.andrepaulino.hotel.HotelResource;
+
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -13,6 +19,11 @@ import jakarta.ws.rs.core.MediaType;
 
 @Path("travelorder")
 public class TravelOrderResource {
+
+    @Inject
+    FlightResource flightResource;
+    @Inject
+    HotelResource hotelResource;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -31,9 +42,21 @@ public class TravelOrderResource {
     @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public TravelOrder newTravelOrder(TravelOrder order) {
-        order.id = null;
+    public TravelOrder newTravelOrder(TravelOrderDTO orderDto) {
+        TravelOrder order = new TravelOrder();
+        order.setIdToNull();
         order.persist();
+
+        Flight flight = new Flight();
+        flight.setTravelOrderId(order.getId());
+        flight.setFromAirport(orderDto.getFromAirport());
+        flight.setToAirport(orderDto.getToAirport());
+        flightResource.newFlight(flight);
+
+        Hotel hotel = new Hotel();
+        hotel.setTravelOrderId(order.getId());
+        hotel.setNights(orderDto.getNights());
+        hotelResource.newHotel(hotel);
 
         return order;
     }
